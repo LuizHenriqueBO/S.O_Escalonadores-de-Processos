@@ -490,23 +490,21 @@ class Escalonador():
                             self.verificaFilaBloqueio(gp, self.timer)
                             self.verificaFilaProcessos(gp, self.timer)
 
-                            # verifica se tem tempo de CPU, caso tenha, continua na fila de pronto
-                            if((processo.get_tempo_CPU() - processo.get_tempo_executado()) > 0):
+                            # verifica se tem tempo restante de CPU, caso tenha, continua na fila de pronto
+                            if(processo.get_tempo_restante() > 0):
 
                                 # Executa o processo atual e incrementa o timer
                                 processo.executar()
                                 self.timer += 1
 
                                
-                                if((processo.get_tempo_CPU() - processo.get_tempo_executado()) <= 0):
+                                if(processo.get_tempo_restante() <= 0):
                                     # Como o processo acabou de ser executado, devemos verificar novamente
-                                    # se o tempo de CPU expirou, se isso acontecer, devemos movê-lo pra
-                                    # fila de finalizados!
+                                    # se o tempo de CPU expirou, se isso acontecer, devemos movê-lo pra fila de finalizados
                                     # como no momento ele será o último processo da fila, adicionamos um
                                     # timer no atributo, que ajudará nas análises e geração de gráficos
-
+                                    processo.set_tempo_fim(self.timer)
                                     self.escalonar(self.timer, gp.get_fila_pronto(), gp.get_fila_finalizados())
-                                    gp.get_fila_finalizados()[-1].set_tempo_fim(self.timer)
                                     break
 
                                 
@@ -525,10 +523,9 @@ class Escalonador():
                                 # logo o processo chegou ao fim, sendo assim escalonamos o processo para
                                 # a fila de finalizados e adicionamos um timer que será seu tempo final
                                 # isso servirá para fins de análise.
-
+                                processo.set_tempo_fim(self.timer)
                                 self.escalonar(self.timer, gp.get_fila_pronto(), gp.get_fila_finalizados())
-                                gp.get_fila_finalizados()[-1].set_tempo_fim(self.timer)
-
+                               
 
                             # incrementa o tempo de execução atual
                             self.tempo += 1
@@ -538,7 +535,6 @@ class Escalonador():
                             # caso o tempo de execução atual seja maior ou igual ao Quantum,
                             # movamos o processo para o fim da fila de pronto
                             # logo após zeramos o tempo de execução
-
                             self.escalonar(self.timer, gp.get_fila_pronto(), gp.get_fila_pronto())
                             self.tempo = 0
                             break
