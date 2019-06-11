@@ -453,7 +453,6 @@ class Escalonador():
 
                             # incrementa o tempo de execução atual
                             self.tempo += 1
-
                         
                         else:
                             # caso o tempo de execução atual seja maior ou igual ao Quantum,
@@ -578,7 +577,7 @@ class Escalonador():
             # continua executando o programa
             self.verificaFilaBloqueio(gp, self.timer)
             self.verificaFilaProcessos(gp, self.timer)
-
+            
             
             if(len(gp.get_fila_pronto()) > 0):
                 gp.get_fila_pronto().sort(key = lambda x: x.get_tempo_restante())
@@ -593,52 +592,74 @@ class Escalonador():
                     
                     # execute os processos
                     while(1):
+                        '''veirificar código'''
+                        
 
                         # continua executando e verifica as fila de bloqueados e fila de processos
                         # Para ver se tem algum processo que precisa ser escalonado para a fila de pronto
                         self.verificaFilaBloqueio(gp, self.timer)
                         self.verificaFilaProcessos(gp, self.timer)
+                        if(len(gp.get_fila_pronto()) > 0):
+                            gp.get_fila_pronto().sort(key = lambda x: x.get_tempo_restante())
 
-                        # verifica se tem tempo de CPU, caso tenha, continua na fila de pronto
-                        if(processo.get_tempo_restante() > 0):
+                        if(len(gp.get_fila_pronto()) > 0):
+                            if(processo.get_tempo_restante() <= gp.get_fila_pronto()[0].get_tempo_restante()):
+                            # se tiver alguém na fila de pronto com o tempo restante menor, manda o processo pro fim da fila de pronto e
+                            # executa o que tem menor tempo restante.
 
-                            # Executa o processo atual e incrementa o timer
-                            processo.executar()
-                            self.timer += 1
 
-                        
-                            if(processo.get_tempo_restante() <= 0):
-                                # Como o processo acabou de ser executado, devemos verificar novamente
-                                # se o tempo de CPU expirou, se isso acontecer, devemos movê-lo pra
-                                # fila de finalizados!
-                                # como no momento ele será o último processo da fila, adicionamos um
-                                # timer no atributo, que ajudará nas análises e geração de gráficos
-                                processo.set_tempo_fim(self.timer)
-                                self.escalonar(self.timer, gp.get_fila_pronto(), gp.get_fila_finalizados())
+                                # verifica se tem tempo de CPU, caso tenha, continua na fila de pronto
+                                if(processo.get_tempo_restante() > 0):
+
+                                    # Executa o processo atual e incrementa o timer
+                                    processo.executar()
+                                    self.timer += 1
+
+                                
+                                    if(processo.get_tempo_restante() <= 0):
+                                        # Como o processo acabou de ser executado, devemos verificar novamente
+                                        # se o tempo de CPU expirou, se isso acontecer, devemos movê-lo pra
+                                        # fila de finalizados!
+                                        # como no momento ele será o último processo da fila, adicionamos um
+                                        # timer no atributo, que ajudará nas análises e geração de gráficos
+                                        processo.set_tempo_fim(self.timer)
+                                        self.escalonar(self.timer, gp.get_fila_pronto(), gp.get_fila_finalizados())
+                                        break
+
+                                    
+                                    if processo.solicita_io():
+                                        # Caso o processo não foi para a fila de finalizado, verificamos se
+                                        # o mesmo solicita I/O, caso isso aconteça, movamos-o para
+                                        # fila de bloqueado e adicionamos um tempo de I/O (padrão para todos os
+                                        # processos).
+                                        processo.add_tempo_IO()
+                                        self.escalonar(self.timer, gp.get_fila_pronto(), gp.get_fila_bloqueado())
+                                        break
+
+                                
+                                else:
+                                    # Caso a diferência do tempo de CPU e tempo Executando seja ZERO,
+                                    # logo o processo chegou ao fim, sendo assim escalonamos o processo para
+                                    # a fila de finalizados e adicionamos um timer que será seu tempo final
+                                    # isso servirá para fins de análise.
+                                    processo.set_tempo_fim(self.timer)
+                                    self.escalonar(self.timer, gp.get_fila_pronto(), gp.get_fila_finalizados())
+
+
+                            else:
+                                # caso o tenha algum processo com o tempo restante menor que o processo executando,
+                                # movamos o processo para o fim da fila de pronto
+                                # e o próximo processo será executado
+                                self.escalonar(self.timer, gp.get_fila_pronto(), gp.get_fila_pronto())
                                 break
-
-                            
-                            if processo.solicita_io():
-                                # Caso o processo não foi para a fila de finalizado, verificamos se
-                                # o mesmo solicita I/O, caso isso aconteça, movamos-o para
-                                # fila de bloqueado e adicionamos um tempo de I/O (padrão para todos os
-                                # processos).
-                                processo.add_tempo_IO()
-                                self.escalonar(self.timer, gp.get_fila_pronto(), gp.get_fila_bloqueado())
-                                break
-
-                        
                         else:
-                            # Caso a diferência do tempo de CPU e tempo Executando seja ZERO,
-                            # logo o processo chegou ao fim, sendo assim escalonamos o processo para
-                            # a fila de finalizados e adicionamos um timer que será seu tempo final
-                            # isso servirá para fins de análise.
-                            processo.set_tempo_fim(self.timer)
-                            self.escalonar(self.timer, gp.get_fila_pronto(), gp.get_fila_finalizados())
-
+                            self.timer += 1
+                            print("processo ocioso, sem ninguem na fila de pronto")
+    
             else:
                 # caso não tiver nenhum processo a ser executado, o processador ficará ocioso e
                 # o timer (tempo de ciclo) será incrementado.
+                print("ocioso")
                 self.timer += 1
 
         # função para gerar o gráfico de execução
