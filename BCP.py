@@ -108,7 +108,7 @@ class BCP():
         self.tempo_IO = 5
     
     def decrem_tempo_IO(self):
-        if(self.tempo_IO > 0):
+        if(self.tempo_IO >= 0):
             self.tempo_IO -=1
             return True
         return False
