@@ -4,7 +4,17 @@ class Gerenciador():
         self.fila_pronto = []
         self.fila_bloqueado = []
         self.fila_finalizados = []
+
+        self.fila_io = []
+        self.fila_quantum = []
         
+
+    def get_fila_io(self):
+        return self.fila_io
+
+    def get_fila_quantum(self):
+        return self.fila_quantum
+    
     
     ##### getters
     def get_fila_pronto(self):
@@ -32,5 +42,11 @@ class Gerenciador():
 
     def add_fila_processos(self, processo):
         self.fila_processos.append(processo)
+
+    def add_fila_io(self, processo):
+        self.fila_io.append(processo)
+    
+    def add_fila_quantum(self, processo):
+        self.fila_quantum.append(processo)
     
     
