@@ -39,9 +39,9 @@ def main():
             
             gp.add_fila_processos(bcp)
         
-        for i in gp.get_fila_processos():
-            #i.fila_IO = [int(k) for k in i.fila_IO]
-            print(i.get_id(), i.get_tempo_chegada(), i.get_fila_io(), i.get_tempo_CPU())
+        # for i in gp.get_fila_processos():
+        #     #i.fila_IO = [int(k) for k in i.fila_IO]
+        #     print(i.get_id(), i.get_tempo_chegada(), i.get_fila_io(), i.get_tempo_CPU())
             
         escalonador = Escalonador()
 
@@ -50,30 +50,21 @@ def main():
         os.system('cls' if os.name == 'nt' else 'clear')
 
         print("Escalonadores")
-        print("[1] FIFO")
-        print("[2] SJF")
-        print("[3] Prioridade")
-        print("[4] Round Robin")
-        print("[5] SRTF")
-        print("[6] Prioridade fila dupla")
+        print("[1] Round Robin")
+        print("[2] SRTF")
+        print("[3] Prioridade fila dupla")
         print("[0] Sair")
         
         opcao = input(">> ")
         if(opcao == '1'):
-            escalonador.fifo(gp)
-        if(opcao == '2'):
-            escalonador.sjf(gp)
-        if(opcao == '3'):
-            escalonador.prioridade(gp)
-        if(opcao == '4'):
             escalonador.RoundRobin(gp)
-        if(opcao == '5'):
+        if(opcao == '2'):
             escalonador.srtf(gp)
-        if(opcao == '6'):
+        if(opcao == '3'):
             escalonador.Prioridade_Dinamica_fila_dupla(gp)
         
-        print(escalonador.tempo_total())
-        'Tempo total {}'.format(escalonador.tempo_total())
+        # print(escalonador.tempo_total())
+        # 'Tempo total {}'.format(escalonador.tempo_total())
 
 if __name__ == '__main__':
 	main()

@@ -29,14 +29,27 @@ def add_dados_diagrama_gantt(gp, tempo):
             'bloqueado': 'rgb(255, 0, 0)'}
 
     for processo in gp.get_fila_finalizados():
-        for pos in range(0, int(len(processo.lista_espera)),2):
-            dados = dict(
-                Task=str(processo.get_id()),
-                Start=str( processo.lista_espera[pos]),
-                Finish=str(processo.lista_espera[pos+1]),
-                Resource='espera'
-            )
-            lista_dados.append(dados)
+    
+
+        # for pos in range(0, int(len(processo.lista_execucao)),2):
+        #     dados = dict(
+        #         Task=str(processo.get_id()),
+        #         Start=str( processo.lista_execucao[pos]), 
+        #         Finish=str( processo.lista_execucao[pos+1]), 
+        #         Resource='execucao'
+        #     )
+        #     lista_dados.append(dados)
+      
+
+
+        # for pos in range(0, int(len(processo.lista_espera)),2):
+        #     dados = dict(
+        #         Task=str(processo.get_id()),
+        #         Start=str( processo.lista_espera[pos]),
+        #         Finish=str(processo.lista_espera[pos+1]),
+        #         Resource='espera'
+        #     )
+        #     lista_dados.append(dados)
 
 
         for pos in range(0, int(len(processo.lista_bloqueado)),2):
@@ -47,7 +60,7 @@ def add_dados_diagrama_gantt(gp, tempo):
                 Resource='bloqueado'
             )
             lista_dados.append(dados)
-        
+
         for pos in range(0, int(len(processo.lista_execucao)),2):
             dados = dict(
                 Task=str(processo.get_id()),
@@ -57,9 +70,19 @@ def add_dados_diagrama_gantt(gp, tempo):
             )
             lista_dados.append(dados)
 
+        for pos in range(0, int(len(processo.lista_espera)),2):
+            dados = dict(
+                Task=str(processo.get_id()),
+                Start=str( processo.lista_espera[pos]),
+                Finish=str(processo.lista_espera[pos+1]),
+                Resource='espera'
+            )
+            lista_dados.append(dados)
+        
+
  
-    fig = ff.create_gantt(lista_dados , colors=colors, title="Diagrama de gantt",width=1200, 
-    height=500, bar_width=0.4, index_col='Resource', showgrid_x= True, showgrid_y=True, show_colorbar=True, group_tasks=True)
+    fig = ff.create_gantt(lista_dados , colors=colors, title="Diagrama de gantt",width=1350, 
+    height=580, bar_width=0.4, index_col='Resource', showgrid_x= True, showgrid_y=True, show_colorbar=True, group_tasks=True)
 
 
     fig['layout'].update(legend=dict(orientation="h", font=dict(family='Arial-Black', size=13, color='#510')))

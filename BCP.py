@@ -27,7 +27,7 @@ class BCP():
 
 
     def set_tempo_bloqueio_inicio(self, tempo):
-        self.lista_bloqueado.append(tempo)
+        self.lista_bloqueado.append(tempo+1)
     def set_tempo_bloqueio_fim(self, tempo):
         self.lista_bloqueado.append(tempo)
 
@@ -38,6 +38,8 @@ class BCP():
             self.lista_espera.pop(-1)
         else:
             self.lista_espera.append(tempo)
+
+
     def set_tempo_espera_fim(self, tempo):
         if tempo in self.lista_espera:
             self.lista_espera.pop(-1)
@@ -95,7 +97,10 @@ class BCP():
     def set_tempo_inicio(self, tempo_inicio):
         if(self.tempo_inicio <= 0):                 # se não foi setado o tempo de inicio ainda, então coloca
             self.tempo_inicio = int(tempo_inicio)   # caso ao contrário não coloca um novo tempo!
-    
+        self.set_tempo_espera_fim(tempo_inicio)
+        self.set_tempo_execucao_inicio(tempo_inicio)
+        # self.lista_execucao.append(tempo_inicio)
+
     def set_tempo_CPU(self, tempo_cpu):
         self.tempo_CPU = int(tempo_cpu)
 
@@ -103,8 +108,11 @@ class BCP():
         #print(fila)
         self.fila_IO = list(map(int,fila)) if fila and fila[-1] else []
 
-    def set_tempo_fim(self, clock):
-        self.tempo_fim =  clock
+    def set_tempo_fim(self, timer):
+        self.tempo_fim =  timer
+        self.set_tempo_execucao_fim(timer)
+
+
 
     
     def set_tempo_restante(self,tempo_restante):
@@ -122,8 +130,7 @@ class BCP():
         print(fila)
         self.fila_IO = list(map(int,fila)) if fila and fila[-1] else []
 
-    def set_tempo_fim(self, clock):
-        self.tempo_fim =  clock
+
 
     ######################################
 
@@ -134,8 +141,10 @@ class BCP():
 
     ##############
     
-    def add_tempo_IO(self):
+    def add_tempo_IO(self, timer):
         self.tempo_IO = 5
+        self.set_tempo_execucao_fim(timer)
+        self.set_tempo_bloqueio_inicio(timer)
     
     def decrem_tempo_IO(self):
         if(self.tempo_IO >= 0):
