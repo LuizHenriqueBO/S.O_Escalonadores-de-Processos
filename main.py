@@ -55,6 +55,7 @@ def main():
         print("[3] Prioridade")
         print("[4] Round Robin")
         print("[5] SRTF")
+        print("[6] Prioridade fila dupla")
         print("[0] Sair")
         
         opcao = input(">> ")
@@ -68,6 +69,8 @@ def main():
             escalonador.RoundRobin(gp)
         if(opcao == '5'):
             escalonador.srtf(gp)
+        if(opcao == '6'):
+            escalonador.Prioridade_Dinamica_fila_dupla(gp)
         
         print(escalonador.tempo_total())
         'Tempo total {}'.format(escalonador.tempo_total())

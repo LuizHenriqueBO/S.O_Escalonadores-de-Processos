@@ -15,6 +15,36 @@ class BCP():
         self.tempo_espera = 0
         self.tempo_restante = 0
 
+        self.lista_execucao = list()
+        self.lista_bloqueado = list()
+        self.lista_espera = list()
+        
+
+    def set_tempo_execucao_inicio(self, tempo):
+        self.lista_execucao.append(tempo)
+    def set_tempo_execucao_fim(self, tempo):
+        self.lista_execucao.append(tempo+1)
+
+
+    def set_tempo_bloqueio_inicio(self, tempo):
+        self.lista_bloqueado.append(tempo)
+    def set_tempo_bloqueio_fim(self, tempo):
+        self.lista_bloqueado.append(tempo)
+
+
+
+    def set_tempo_espera_inicio(self, tempo):
+        if tempo in self.lista_espera:
+            self.lista_espera.pop(-1)
+        else:
+            self.lista_espera.append(tempo)
+    def set_tempo_espera_fim(self, tempo):
+        if tempo in self.lista_espera:
+            self.lista_espera.pop(-1)
+        else:
+            self.lista_espera.append(tempo)
+    
+
 
     def get_id(self):
         return self.id
