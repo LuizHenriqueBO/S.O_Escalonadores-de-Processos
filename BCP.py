@@ -121,19 +121,7 @@ class BCP():
 
 
 
- ################# setters ############################
-    
-    def set_tempo_CPU(self, tempo_cpu):
-        self.tempo_CPU = int(tempo_cpu)
-
-    def set_fila_io(self, fila):
-        print(fila)
-        self.fila_IO = list(map(int,fila)) if fila and fila[-1] else []
-
-
-
-    ######################################
-
+ 
 
 
     ###################### metodos #############
@@ -184,7 +172,7 @@ class BCP():
     def solicita_io(self):
         #print("Solicita io %d" % self.tempo_executado)
         if(self.tempo_executado in self.fila_IO):
-            print("processo: ",self.id,"entrou em IO no tempo: ",self.tempo_executado)
+            # print("processo: ",self.id,"entrou em IO no tempo: ",self.tempo_executado)
             self.fila_IO.remove(self.fila_IO[0])
             #print("QQQ")
             return True
