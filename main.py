@@ -7,7 +7,7 @@ from gerenciador import Gerenciador     # do arquivo gerenciador importa a class
 from escalonador import Escalonador
 
 def leitor(file_name):
-    file_reader = open(file_name, 'r');
+    file_reader = open(file_name, 'r')
     file_list = file_reader.readlines()
     file_list = [ i.replace('\n', '') for i in file_list]
     file_list = [ i.split(' ') for i in file_list]

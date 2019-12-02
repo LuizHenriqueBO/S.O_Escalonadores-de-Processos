@@ -19,9 +19,9 @@ def add_dados_diagrama_gantt(gp, tempo, algoritmo):
     tempo_medio_espera = round(float(total_espera/qtd),2)
 
 
-    colors = {'execucao': 'rgb(0, 255, 0)',
-            'espera': (1, 0.9, 0.16),
-            'bloqueado': 'rgb(255, 0, 0)'}
+    colors = {'Execução': 'rgb(0, 255, 0)',
+            'Espera': (1, 0.9, 0.16),
+            'Bloqueado': 'rgb(255, 0, 0)'}
 
     
     #   Adicionando os dados em uma lista de dados para emitir o diagrama de gantt
@@ -32,7 +32,7 @@ def add_dados_diagrama_gantt(gp, tempo, algoritmo):
                 Task=str(processo.get_id()),
                 Start=str(processo.lista_bloqueado[pos]), 
                 Finish=str( processo.lista_bloqueado[pos+1]), 
-                Resource='bloqueado'
+                Resource='Bloqueado'
             )
             lista_dados.append(dados)
     
@@ -41,7 +41,7 @@ def add_dados_diagrama_gantt(gp, tempo, algoritmo):
                 Task=str(processo.get_id()),
                 Start=str( processo.lista_espera[pos]),
                 Finish=str(processo.lista_espera[pos+1]),
-                Resource='espera'
+                Resource='Espera'
             )
             lista_dados.append(dados)
     
@@ -50,7 +50,7 @@ def add_dados_diagrama_gantt(gp, tempo, algoritmo):
                 Task=str(processo.get_id()),
                 Start=str( processo.lista_execucao[pos]), 
                 Finish=str( processo.lista_execucao[pos+1]), 
-                Resource='execucao'
+                Resource='Execução'
             )
             lista_dados.append(dados)
  
